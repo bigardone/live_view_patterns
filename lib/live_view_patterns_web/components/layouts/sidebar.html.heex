@@ -12,13 +12,13 @@
             path={~p"/async-requests-union-types-skeletons"}
             active={@page_name == LiveViewPatternsWeb.AsyncRequestsLive}
           >
-            Async requests
+            Async requests, union types, and skeletons
           </.navigation_link>
         </li>
       </ul>
     </div>
   </aside>
-  <main class="sm:px-6 lg:px-8 p-12">
+  <main class="sm:px-6 lg:px-8 flex-col justify-between p-12">
     <.flash kind={:info} title="Success!" flash={@flash} />
     <.flash kind={:error} title="Error!" flash={@flash} />
     <.flash
@@ -32,6 +32,20 @@
     >
       Attempting to reconnect <Heroicons.arrow_path class="animate-spin inline w-3 h-3 ml-1" />
     </.flash>
-    <%= @inner_content %>
+    <div class="flex-1">
+      <%= @inner_content %>
+    </div>
+    <footer class="md:flex md:items-center md:justify-between md:p-6 flex items-center p-4 mt-24 bg-white border-t">
+      <span class="sm:text-center text-sm text-gray-500">
+        © <%= DateTime.utc_now().year %> <a href="https://flowbite.com/" class="hover:underline">LiveView Patterns</a>. Crafted with
+        <span class="text-pink-600">♥</span>
+        by bigardone.
+      </span>
+      <ul class="flex flex-wrap items-center text-sm text-gray-500">
+        <li>
+          <a href="#" class="hover:underline md:mr-6 mr-4">Source code</a>
+        </li>
+      </ul>
+    </footer>
   </main>
 </div>

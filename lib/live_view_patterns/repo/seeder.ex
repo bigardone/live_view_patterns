@@ -22,7 +22,7 @@ defmodule LiveViewPatterns.Repo.Seeder do
 
   defp run do
     data =
-      for _ <- 1..100 do
+      for _ <- 1..10 do
         first_name = Faker.Person.first_name()
         last_name = Faker.Person.last_name()
 

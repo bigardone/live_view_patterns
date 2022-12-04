@@ -109,6 +109,71 @@ defmodule LiveViewPatternsWeb.CoreComponents do
     """
   end
 
+  attr(:id, :string, required: true)
+  attr(:title, :string, required: true)
+  attr(:close_patch, :string, required: true)
+
+  slot(:inner_block, required: true)
+
+  def drawer(assigns) do
+    ~H"""
+    <.link
+      class="bg-opacity-0 transition-colors fixed inset-0 z-30 bg-gray-900"
+      patch={@close_patch}
+      phx-mounted={show_backdrop()}
+      phx-remove={hide_backdrop()}
+    >
+    </.link>
+    <div
+      id={@id}
+      class="transition-transform translate-x-full fixed top-0 right-0 z-40 w-2/5 h-screen overflow-y-auto bg-white"
+      tabindex="-1"
+      aria-labelledby="drawer-right-label"
+      aria-hidden="true"
+      phx-mounted={show_content()}
+      phx-remove={hide_content()}
+    >
+      <header class="relative flex items-center p-4 mb-4 border-b">
+        <h5 id="drawer-right-label" class="text-base font-semibold text-gray-800">
+          <%= @title %>
+        </h5>
+        <.link
+          class="hover:bg-gray-200 hover:text-gray-900 p-1.5 top-1/2 -translate-y-1/2 right-4 absolute items-center text-sm text-gray-400 bg-transparent rounded-full"
+          patch={@close_patch}
+        >
+          <Heroicons.x_mark class="w-4 h-4" />
+          <span class="sr-only">Close menu</span>
+        </.link>
+      </header>
+      <div class="p-4">
+        <%= render_slot(@inner_block) %>
+      </div>
+    </div>
+    """
+  end
+
+  defp show_content do
+    %JS{}
+    |> JS.set_attribute({"role", "dialog"})
+    |> JS.remove_class("translate-x-full")
+  end
+
+  defp hide_content do
+    %JS{}
+    |> JS.remove_attribute("role")
+    |> JS.transition("translate-x-full", time: 200)
+  end
+
+  defp show_backdrop do
+    %JS{}
+    |> JS.add_class("bg-opacity-50")
+    |> JS.remove_class("bg-opacity-0")
+  end
+
+  defp hide_backdrop do
+    JS.transition("bg-opacity-0", time: 200)
+  end
+
   ## JS Commands
 
   def show(js \\ %JS{}, selector) do
