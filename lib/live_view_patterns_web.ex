@@ -56,6 +56,8 @@ defmodule LiveViewPatternsWeb do
 
       alias Phoenix.LiveView
 
+      import LiveViewPatternsWeb.Layouts, only: [footer: 1]
+
       unquote(html_helpers())
     end
   end

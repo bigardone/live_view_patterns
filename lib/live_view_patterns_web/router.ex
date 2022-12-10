@@ -15,7 +15,11 @@ defmodule LiveViewPatternsWeb.Router do
 
     live_session :default do
       live "/", HomeLive
-      live "/async-requests-union-types-skeletons", AsyncRequestsLive
+
+      scope "/async-requests", AsyncRequestsLive do
+        live "/union-types-and-skeletons", UnionTypesAndSkeletonsLive
+        live "/partial-loading", PartialLoadingLive
+      end
     end
   end
 end

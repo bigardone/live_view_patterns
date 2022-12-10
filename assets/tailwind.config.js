@@ -9,7 +9,11 @@ module.exports = {
     '../lib/*_web.ex',
     '../lib/*_web/**/*.*ex',
   ],
-  theme: {},
+  theme: {
+    maxWidth: {
+      '8xl': '90rem',
+    },
+  },
   plugins: [
     require('@tailwindcss/forms'),
     plugin(({ addVariant }) => addVariant('phx-no-feedback', ['.phx-no-feedback&', '.phx-no-feedback &'])),

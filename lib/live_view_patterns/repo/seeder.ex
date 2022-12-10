@@ -22,7 +22,7 @@ defmodule LiveViewPatterns.Repo.Seeder do
 
   defp run do
     data =
-      for _ <- 1..10 do
+      for _ <- 1..15 do
         first_name = Faker.Person.first_name()
         last_name = Faker.Person.last_name()
 
@@ -36,7 +36,8 @@ defmodule LiveViewPatterns.Repo.Seeder do
           first_name: first_name,
           last_name: last_name,
           email: email,
-          avatar_url: Faker.Avatar.image_url()
+          avatar_url: Faker.Avatar.image_url(),
+          phone_number: Faker.Phone.EnUs.phone()
         }
       end
 

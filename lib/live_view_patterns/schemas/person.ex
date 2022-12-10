@@ -6,6 +6,7 @@ defmodule LiveViewPatterns.Schemas.Person do
     field(:last_name, :string)
     field(:email, :string)
     field(:avatar_url, :string)
+    field(:phone_number, :string)
   end
 
   def changeset(person, params \\ %{}) do

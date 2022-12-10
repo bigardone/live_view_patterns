@@ -62,23 +62,23 @@ defmodule LiveViewPatternsWeb.CoreComponents do
   @doc """
   Renders a list skeleton placeholder
   """
-  attr(:lines, :integer, default: 10)
+  attr(:lines, :integer, default: 15)
 
   def list_skeleton(assigns) do
     ~H"""
     <div role="status" class="divide-y divide-gray-200 animate-pulse max-w-full">
       <div
         :for={_ <- 1..@lines}
-        class="first-of-type:bt-gray-200 first-of-type:border-t flex items-center justify-between px-2 py-4"
+        class="first-of-type:bt-gray-200 first-of-type:border-t gap-x-4 flex items-center justify-between px-2 py-4"
       >
         <div class="w-1/12">
           <div class="w-10 h-10 bg-gray-300 rounded-full" />
         </div>
-        <div class="w-10/12">
+        <div class="w-8/12">
           <div class="mb-3.5 w-24 h-3 bg-gray-300 rounded-full"></div>
           <div class="h-2.5 w-32 bg-gray-200 rounded-full"></div>
         </div>
-        <div class="w-1/12">
+        <div class="w-3/12">
           <div class="h-2.5 w-12 ml-auto bg-gray-300 rounded-full"></div>
         </div>
       </div>
@@ -100,8 +100,10 @@ defmodule LiveViewPatternsWeb.CoreComponents do
     <.link
       navigate={@path}
       class={[
-        "hover:bg-gray-100 group flex items-center p-2 text-sm font-normal text-gray-900 rounded-lg",
-        @active && "font-bold"
+        "flex items-center pl-4 text-sm transition-colors",
+        @active && "text-purple-700 font-semibold border-l border-purple-700",
+        not @active &&
+          "hover:text-gray-900 text-gray-600 border-l hover:border-gray-700 border-transparent"
       ]}
     >
       <%= render_slot(@inner_block) %>
@@ -152,6 +154,35 @@ defmodule LiveViewPatternsWeb.CoreComponents do
     """
   end
 
+  slot(:inner_block, required: true)
+
+  def code(assigns) do
+    ~H"""
+    <span class="font-mono text-xs text-gray-700 bg-gray-200"><%= render_slot(@inner_block) %></span>
+    """
+  end
+
+  attr(:patch, :string)
+  attr(:click, JS)
+
+  slot(:inner_block, required: true)
+
+  def action_button(%{patch: _} = assigns) do
+    ~H"""
+    <.link patch={@patch} class={action_button_class()}>
+      <%= render_slot(@inner_block) %>
+    </.link>
+    """
+  end
+
+  def action_button(%{click: _} = assigns) do
+    ~H"""
+    <button class={action_button_class()} phx-click={@click}>
+      <%= render_slot(@inner_block) %>
+    </button>
+    """
+  end
+
   defp show_content do
     %JS{}
     |> JS.set_attribute({"role", "dialog"})
@@ -195,5 +226,9 @@ defmodule LiveViewPatternsWeb.CoreComponents do
          "opacity-100 translate-y-0 sm:scale-100",
          "opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"}
     )
+  end
+
+  defp action_button_class do
+    "bg-gray-50 hover:text-gray-900 hover:bg-gray-100 inline-flex items-center gap-x-1 justify-center px-5 py-2 text-sm font-medium text-gray-600 rounded"
   end
 end

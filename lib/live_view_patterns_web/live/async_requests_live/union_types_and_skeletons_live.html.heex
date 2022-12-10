@@ -1,0 +1,80 @@
+<div class="gap-x-16 flex bg-white">
+  <section class="gap-x-16 w-4/6">
+    <header class="mb-8">
+      <h2 class="mb-2 text-sm font-semibold text-purple-700">Async requests</h2>
+      <h1 class="md:text-xl lg:text-2xl mb-4 text-2xl font-extrabold leading-none tracking-tight text-gray-900">
+        Union types and skeletons
+      </h1>
+      <div class="gap-x-1 flex">
+        <.action_button patch={~p"/async-requests/union-types-and-skeletons"}>
+          <Heroicons.play_circle class="h-[12px]" solid /> Refresh data
+        </.action_button>
+        <.action_button click={JS.push("force_error")}>
+          <Heroicons.fire class="h-[12px]" solid /> Force error
+        </.action_button>
+      </div>
+    </header>
+
+    <div class="">
+      <h4 class="md:text-lg lg:text-xl mb-4 text-xl font-extrabold leading-none text-gray-900">
+        Contacts
+      </h4>
+      <%= case @data do %>
+        <% %RemoteData.NotRequested{} -> %>
+          <.list_skeleton />
+        <% %RemoteData.Requesting{} -> %>
+          <.list_skeleton />
+        <% %RemoteData.Error{} -> %>
+          <div class="flex flex-col items-center justify-center p-8 border-t">
+            <Heroicons.exclamation_triangle class="h-12 mb-4 text-gray-500" />
+            <h5 class="md:text-lg lg:text-lg mb-2 text-xl font-bold text-gray-900">
+              Oops!
+            </h5>
+            <p class="text-gray-600">An error occurred while fetching your contacts.</p>
+          </div>
+        <% %RemoteData.Success{value: data} -> %>
+          <div class="divide-y divide-gray-200 max-w-full">
+            <.person :for={person <- data} person={person} />
+          </div>
+      <% end %>
+    </div>
+    <.footer />
+  </section>
+  <div class="w-2/6">
+    <div class="space-y-6 top-12 sticky text-sm text-gray-600">
+      <div>
+        <h5 class="md:text-xs lg:text-sm mb-3 text-sm font-bold leading-none text-gray-900 uppercase">
+          Intro
+        </h5>
+        <p class="">
+          This pattern is convenient when the initial data load takes a noticeable amount of time, giving the user a sense of unresponsiveness in the UI.
+        </p>
+      </div>
+      <div>
+        <h5 class="md:text-xs lg:text-sm mb-3 text-sm font-bold leading-none text-gray-900 uppercase">
+          Implementation
+        </h5>
+        <ol class="gap-y-3 flex flex-col list-decimal list-inside">
+          <li>
+            Create a union type representing the possible states of a remote data request
+            (<.code>not_requested</.code>,
+            <.code>requesting</.code>,
+            <.code>success</.code>, and
+            <.code>error</.code>)
+          </li>
+          <li>
+            When the live view mounts, assign the
+            <.code>requesting</.code>
+            state to the socket and spawn a task requesting the data.
+          </li>
+          <li>
+            The live view handles the message with the task's result and assigns the data to the socket with the corresponding type.
+          </li>
+          <li>
+            The live view's template renders a skeleton placeholder while the task fetches the data or either the data or an error state once it handles the task's result.
+          </li>
+        </ol>
+      </div>
+    </div>
+  </div>
+</div>
