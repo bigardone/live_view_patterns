@@ -1,23 +1,29 @@
 <div class="gap-x-16 flex bg-white">
   <section class="gap-x-16 w-4/6">
     <header class="mb-8">
-      <h2 class="mb-2 text-sm font-semibold text-purple-700">Async requests</h2>
-      <h1 class="md:text-xl lg:text-2xl mb-4 text-2xl font-extrabold leading-none tracking-tight text-gray-900">
-        Union types and skeletons
+      <h2 class="mb-2 text-sm font-semibold text-purple-700">Data loading</h2>
+      <h1 class="md:text-xl lg:text-2xl mb-2 text-2xl font-extrabold leading-none tracking-tight text-gray-900">
+        Async requests
       </h1>
+      <p class="mb-4 text-gray-600">
+        This pattern is convenient when the initial data load takes a noticeable amount of time, giving the user a sense of unresponsiveness in the UI.
+        It takes advantage of <strong>union types</strong>, <strong>async requests</strong>, and
+        <strong>skeleton placeholders</strong>
+        to provide immediate visual feedback to the user.
+      </p>
       <div class="gap-x-1 flex">
-        <.action_button patch={~p"/async-requests/union-types-and-skeletons"}>
-          <Heroicons.play_circle class="h-[12px]" solid /> Refresh data
+        <.action_button patch={~p"/data-loading/async-requests"}>
+          <Heroicons.arrow_path class="h-[13px]" mini /> Reload page
         </.action_button>
         <.action_button click={JS.push("force_error")}>
-          <Heroicons.fire class="h-[12px]" solid /> Force error
+          <Heroicons.exclamation_circle class="h-[13px]" mini /> Reload page with error
         </.action_button>
       </div>
     </header>
 
-    <div class="">
+    <.browser_window>
       <h4 class="md:text-lg lg:text-xl mb-4 text-xl font-extrabold leading-none text-gray-900">
-        Contacts
+        User stats
       </h4>
       <%= case @data do %>
         <% %RemoteData.NotRequested{} -> %>
@@ -26,30 +32,22 @@
           <.list_skeleton />
         <% %RemoteData.Error{} -> %>
           <div class="flex flex-col items-center justify-center p-8 border-t">
-            <Heroicons.exclamation_triangle class="h-12 mb-4 text-gray-500" />
-            <h5 class="md:text-lg lg:text-lg mb-2 text-xl font-bold text-gray-900">
+            <Heroicons.exclamation_triangle solid class="h-16 mb-2 text-gray-300" />
+            <h5 class="md:text-lg lg:text-lg mb-2 text-xl font-bold leading-none text-gray-900">
               Oops!
             </h5>
-            <p class="text-gray-600">An error occurred while fetching your contacts.</p>
+            <p class="text-gray-600">An error occurred while fetching the data.</p>
           </div>
-        <% %RemoteData.Success{value: data} -> %>
+        <% %RemoteData.Success{data: data} -> %>
           <div class="divide-y divide-gray-200 max-w-full">
-            <.person :for={person <- data} person={person} />
+            <.user :for={user <- data} user={user} />
           </div>
       <% end %>
-    </div>
+    </.browser_window>
     <.footer />
   </section>
   <div class="w-2/6">
     <div class="space-y-6 top-12 sticky text-sm text-gray-600">
-      <div>
-        <h5 class="md:text-xs lg:text-sm mb-3 text-sm font-bold leading-none text-gray-900 uppercase">
-          Intro
-        </h5>
-        <p class="">
-          This pattern is convenient when the initial data load takes a noticeable amount of time, giving the user a sense of unresponsiveness in the UI.
-        </p>
-      </div>
       <div>
         <h5 class="md:text-xs lg:text-sm mb-3 text-sm font-bold leading-none text-gray-900 uppercase">
           Implementation
@@ -57,10 +55,17 @@
         <ol class="gap-y-3 flex flex-col list-decimal list-inside">
           <li>
             Create a union type representing the possible states of a remote data request
-            (<.code>not_requested</.code>,
-            <.code>requesting</.code>,
-            <.code>success</.code>, and
-            <.code>error</.code>)
+            (<.code>%NotRequested{}</.code>,
+            <.code>%Requesting{ref: reference()}</.code>,
+            <.code>%Success{data: any()}</.code>, and
+            <.code>%Error{reason: any()}</.code>)
+            <a
+              class="flex items-center border-b border-dotted"
+              href="https://github.com/bigardone/live_view_patterns/blob/main/lib/live_view_patterns_web/remote_data.ex"
+              target="_blank"
+            >
+              <Heroicons.link mini class="w-3" /> View implementation
+            </a>
           </li>
           <li>
             When the live view mounts, assign the

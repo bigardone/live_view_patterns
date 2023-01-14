@@ -22,5 +22,5 @@ defmodule LiveViewPatterns do
     apply(__MODULE__, which, [])
   end
 
-  defdelegate all_people, to: LiveViewPatterns.People, as: :all
+  defdelegate all_users, to: LiveViewPatterns.Users, as: :all
 end

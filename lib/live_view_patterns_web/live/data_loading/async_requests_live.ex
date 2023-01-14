@@ -1,7 +1,7 @@
-defmodule LiveViewPatternsWeb.AsyncRequestsLive.UnionTypesAndSkeletonsLive do
+defmodule LiveViewPatternsWeb.DataLoading.AsyncRequestsLive do
   use LiveViewPatternsWeb, :live_view
 
-  import LiveViewPatternsWeb.AsyncRequestsLive.PersonComponent
+  import __MODULE__.UserComponent
 
   alias LiveViewPatternsWeb.RemoteData
   alias Phoenix.LiveView.JS
@@ -62,7 +62,7 @@ defmodule LiveViewPatternsWeb.AsyncRequestsLive.UnionTypesAndSkeletonsLive do
       if force_error do
         {:error, :timeout}
       else
-        {:ok, LiveViewPatterns.all_people()}
+        {:ok, LiveViewPatterns.all_users()}
       end
     end)
   end

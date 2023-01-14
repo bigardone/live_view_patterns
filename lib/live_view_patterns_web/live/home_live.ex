@@ -29,12 +29,12 @@ defmodule LiveViewPatternsWeb.HomeLive do
         </h2>
         <div class="grid grid-cols-2 lg:grid-cols-3">
           <.link
-            navigate={~p"/async-requests/union-types-and-skeletons"}
+            navigate={~p"/data-loading/async-requests"}
             class="hover:shadow-xl hover:scale-105 transition-all block max-w-sm p-6 bg-white border border-gray-200 rounded-lg shadow-md"
           >
-            <h4 class="mb-2 text-sm font-semibold text-purple-700">Async requests</h4>
+            <h4 class="mb-1 text-sm font-semibold text-purple-700">Data loading</h4>
             <h3 class="md:text-lg mb-2 text-lg font-bold tracking-tight text-gray-900">
-              Union types and skeletons
+              Async requests
             </h3>
             <p class="font-normal text-gray-600">
               A helpful pattern that renders some visual feedback while loading data asynchronously.

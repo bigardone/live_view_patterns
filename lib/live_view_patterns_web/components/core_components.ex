@@ -72,14 +72,17 @@ defmodule LiveViewPatternsWeb.CoreComponents do
         class="first-of-type:bt-gray-200 first-of-type:border-t gap-x-4 flex items-center justify-between px-2 py-4"
       >
         <div class="w-1/12">
-          <div class="w-10 h-10 bg-gray-300 rounded-full" />
+          <div class="w-10 h-10 bg-gray-200 rounded-full" />
         </div>
-        <div class="w-8/12">
-          <div class="mb-3.5 w-24 h-3 bg-gray-300 rounded-full"></div>
+        <div class="w-5/12">
+          <div class="mb-3.5 w-24 h-3 bg-gray-200 rounded-full"></div>
           <div class="h-2.5 w-32 bg-gray-200 rounded-full"></div>
         </div>
-        <div class="w-3/12">
-          <div class="h-2.5 w-12 ml-auto bg-gray-300 rounded-full"></div>
+        <div class="grid grid-cols-2 gap-x-6 w-6/12">
+          <div :for={_ <- 1..2}>
+            <div class="w-14 h-2 mb-2 bg-gray-200 rounded-full" />
+            <div class="rounded-md w-12 h-8 bg-gray-200" />
+          </div>
         </div>
       </div>
       <span class="sr-only">Loading...</span>
@@ -183,6 +186,24 @@ defmodule LiveViewPatternsWeb.CoreComponents do
     """
   end
 
+  slot(:inner_block, required: true)
+
+  def browser_window(assigns) do
+    ~H"""
+    <div class="rounded-md shadow-xl">
+      <div class="rounded-t-md gap-x-2 bg-slate-700 flex items-center p-3">
+        <div class="w-3 h-3 bg-red-500 rounded-full"></div>
+        <div class="w-3 h-3 bg-yellow-500 rounded-full"></div>
+        <div class="w-3 h-3 bg-green-500 rounded-full"></div>
+        <div class="bg-slate-900 w-1/2 p-2 ml-4 rounded"></div>
+      </div>
+      <div class="rounded-b-md p-4 border">
+        <%= render_slot(@inner_block) %>
+      </div>
+    </div>
+    """
+  end
+
   defp show_content do
     %JS{}
     |> JS.set_attribute({"role", "dialog"})
@@ -229,6 +250,6 @@ defmodule LiveViewPatternsWeb.CoreComponents do
   end
 
   defp action_button_class do
-    "bg-gray-50 hover:text-gray-900 hover:bg-gray-100 inline-flex items-center gap-x-1 justify-center px-5 py-2 text-sm font-medium text-gray-600 rounded"
+    "bg-gray-100 hover:text-gray-900 hover:bg-gray-200 transition-colors inline-flex items-center gap-x-1 justify-center px-5 py-2 text-sm font-medium text-gray-600 rounded"
   end
 end

@@ -37,24 +37,22 @@
       <nav class="text-sm">
         <ul>
           <li>
-            <h5 class="mb-3 font-bold text-gray-900">Async requests</h5>
+            <h5 class="mb-3 font-bold text-gray-900">Data loading</h5>
             <ul class="space-y-2">
               <li>
                 <.navigation_link
-                  path={~p"/async-requests/union-types-and-skeletons"}
-                  active={
-                    @page_name == LiveViewPatternsWeb.AsyncRequestsLive.UnionTypesAndSkeletonsLive
-                  }
+                  path={~p"/data-loading/async-requests"}
+                  active={@page_name == LiveViewPatternsWeb.DataLoading.AsyncRequestsLive}
                 >
-                  Union types and skeletons
+                  Async requests
                 </.navigation_link>
               </li>
               <li>
                 <.navigation_link
-                  path={~p"/async-requests/partial-loading"}
-                  active={@page_name == LiveViewPatternsWeb.AsyncRequestsLive.PartialLoadingLive}
+                  path={~p"/data-loading/partial-async-requests"}
+                  active={@page_name == LiveViewPatternsWeb.DataLoading.PartialAsyncRequestsLive}
                 >
-                  Partial loading
+                  Partial async requests
                 </.navigation_link>
               </li>
             </ul>

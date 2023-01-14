@@ -1,7 +1,8 @@
 defmodule LiveViewPatterns.Repo.Seeder do
   alias LiveViewPatterns.{
     Repo,
-    Schemas.Person
+    Schemas.User,
+    Schemas.User.Stats
   }
 
   def child_spec(opts) do
@@ -21,26 +22,35 @@ defmodule LiveViewPatterns.Repo.Seeder do
   end
 
   defp run do
-    data =
-      for _ <- 1..15 do
-        first_name = Faker.Person.first_name()
-        last_name = Faker.Person.last_name()
+    for _ <- 1..15 do
+      first_name = Faker.Person.first_name()
+      last_name = Faker.Person.last_name()
 
-        email =
-          [first_name, last_name]
-          |> Enum.join(".")
-          |> String.downcase()
-          |> then(&(&1 <> "@" <> Faker.Internet.free_email_service()))
+      email =
+        [first_name, last_name]
+        |> Enum.join(".")
+        |> String.downcase()
+        |> then(&(&1 <> "@" <> Faker.Internet.free_email_service()))
 
+      user =
         %{
           first_name: first_name,
           last_name: last_name,
           email: email,
-          avatar_url: Faker.Avatar.image_url(),
-          phone_number: Faker.Phone.EnUs.phone()
+          avatar_url: Faker.Avatar.image_url()
         }
-      end
+        |> User.changeset()
+        |> Repo.insert!()
 
-    Repo.insert_all(Person, data)
+      for _ <- 5..15 do
+        %{
+          user_id: user.id,
+          finished_tasks: Enum.random(5..20),
+          tracked_time: Enum.random(60..6_000)
+        }
+        |> Stats.changeset()
+        |> Repo.insert!()
+      end
+    end
   end
 end
