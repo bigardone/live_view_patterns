@@ -74,11 +74,11 @@ defmodule LiveViewPatternsWeb.CoreComponents do
         <div class="w-1/12">
           <div class="w-10 h-10 bg-gray-200 rounded-full" />
         </div>
-        <div class="w-5/12">
+        <div class="w-7/12">
           <div class="mb-3.5 w-24 h-3 bg-gray-200 rounded-full"></div>
           <div class="h-2.5 w-32 bg-gray-200 rounded-full"></div>
         </div>
-        <div class="grid grid-cols-2 gap-x-6 w-6/12">
+        <div class="grid grid-cols-2 gap-x-6 w-4/12">
           <div :for={_ <- 1..2}>
             <div class="w-14 h-2 mb-2 bg-gray-200 rounded-full" />
             <div class="rounded-md w-12 h-8 bg-gray-200" />
@@ -165,10 +165,19 @@ defmodule LiveViewPatternsWeb.CoreComponents do
     """
   end
 
+  attr(:navigate, :string)
   attr(:patch, :string)
   attr(:click, JS)
 
   slot(:inner_block, required: true)
+
+  def action_button(%{navigate: _} = assigns) do
+    ~H"""
+    <.link navigate={@navigate} class={action_button_class()}>
+      <%= render_slot(@inner_block) %>
+    </.link>
+    """
+  end
 
   def action_button(%{patch: _} = assigns) do
     ~H"""

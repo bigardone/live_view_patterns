@@ -21,4 +21,24 @@ defmodule LiveViewPatternsWeb.Layouts do
     </footer>
     """
   end
+
+  defp navbar(page_name) do
+    [
+      %{
+        title: "Data loading",
+        sections: [
+          %{
+            title: "Async requests",
+            active: page_name == LiveViewPatternsWeb.DataLoading.AsyncRequestsLive,
+            path: ~p"/data-loading/async-requests"
+          },
+          %{
+            title: "Partial async requests",
+            active: page_name == LiveViewPatternsWeb.DataLoading.PartialAsyncRequestsLive,
+            path: ~p"/data-loading/partial-async-requests"
+          }
+        ]
+      }
+    ]
+  end
 end

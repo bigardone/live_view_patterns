@@ -12,15 +12,15 @@ defmodule LiveViewPatternsWeb.DataLoading.AsyncRequestsLive.UserComponent do
       <div class="w-1/12">
         <img class="w-10 h-10 rounded-full" src={@user.avatar_url} alt="Rounded avatar" />
       </div>
-      <div class="w-5/12">
+      <div class="w-7/12">
         <div class="font-bold"><%= User.full_name(@user) %></div>
         <div class="flex items-end text-sm leading-none text-gray-600">
           <Heroicons.envelope class="h-[11px] text-gray-300 mr-1" solid /> <%= @user.email %>
         </div>
       </div>
-      <div class="grid grid-cols-2 gap-x-6 w-6/12">
+      <div class="grid grid-cols-2 gap-x-6 w-4/12">
         <.stats text="Num. tasks" value={@user.stats.finished_tasks} />
-        <.stats text="Tracked time" value={"#{Float.round(@user.stats.tracked_time / 3600, 1)}h"} />
+        <.stats text="Time" value={"#{Float.round(@user.stats.tracked_time / 3600, 1)}h"} />
       </div>
     </div>
     """

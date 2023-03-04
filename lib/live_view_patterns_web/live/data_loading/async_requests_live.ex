@@ -41,6 +41,8 @@ defmodule LiveViewPatternsWeb.DataLoading.AsyncRequestsLive do
         {ref, {:ok, data}},
         %{assigns: %{data: %RemoteData.Requesting{ref: ref}}} = socket
       ) do
+    Process.demonitor(ref, [:flush])
+
     {:noreply, assign(socket, data: RemoteData.success(data))}
   end
 
@@ -48,11 +50,9 @@ defmodule LiveViewPatternsWeb.DataLoading.AsyncRequestsLive do
         {ref, {:error, _}},
         %{assigns: %{data: %RemoteData.Requesting{ref: ref}}} = socket
       ) do
-    {:noreply, assign(socket, data: RemoteData.error("Internal error"))}
-  end
+    Process.demonitor(ref, [:flush])
 
-  def handle_info(_, socket) do
-    {:noreply, socket}
+    {:noreply, assign(socket, data: RemoteData.error("Internal error"))}
   end
 
   defp fetch_data(force_error \\ false) do
@@ -62,7 +62,7 @@ defmodule LiveViewPatternsWeb.DataLoading.AsyncRequestsLive do
       if force_error do
         {:error, :timeout}
       else
-        {:ok, LiveViewPatterns.all_users()}
+        {:ok, LiveViewPatterns.all_users(with_stats: true)}
       end
     end)
   end

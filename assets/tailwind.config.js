@@ -10,6 +10,10 @@ module.exports = {
     '../lib/*_web/**/*.*ex',
   ],
   theme: {
+    fontFamily: {
+      sans: ['Poppins', 'Arial', 'sans-serif'],
+      mono: ['"Source Code Pro"', 'ui-monospace', 'SFMono-Regular'],
+    },
     maxWidth: {
       '8xl': '90rem',
     },

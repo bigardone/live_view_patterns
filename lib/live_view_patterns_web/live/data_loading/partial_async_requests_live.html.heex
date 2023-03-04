@@ -5,14 +5,25 @@
       <h1 class="md:text-xl lg:text-2xl mb-4 text-2xl font-extrabold leading-none tracking-tight text-gray-900">
         Partial async requests
       </h1>
+      <p class="mb-4 text-gray-600">
+        This pattern is particularly useful when you need to retrieve data from multiple sources or perform complex calculations. It initiates by rendering the initial data, while making asynchronous requests for the more intensive part of the process. During this time, a skeleton placeholder is displayed to indicate progress.
+      </p>
+      <div class="gap-x-1 flex">
+        <.action_button navigate={~p"/data-loading/partial-async-requests"}>
+          <Heroicons.arrow_path class="h-[13px]" mini /> Reload page
+        </.action_button>
+        <.action_button navigate={~p"/data-loading/partial-async-requests?force_error=true"}>
+          <Heroicons.exclamation_circle class="h-[13px]" mini /> Reload page with error
+        </.action_button>
+      </div>
     </header>
 
     <.browser_window>
       <h4 class="md:text-lg lg:text-xl mb-4 text-xl font-extrabold leading-none text-gray-900">
-        Users
+        User stats
       </h4>
-      <div class="divide-y divide-gray-200 max-w-full">
-        <.user :for={user <- @data} user={user} />
+      <div id="users" class="divide-y divide-gray-200 max-w-full" phx-update="stream">
+        <.user :for={{_, user} <- @streams.users} user={user} />
       </div>
     </.browser_window>
     <.footer />
@@ -21,19 +32,8 @@
     <div class="space-y-6 top-12 sticky text-sm text-gray-600">
       <div>
         <h5 class="md:text-xs lg:text-sm mb-3 text-sm font-bold leading-none text-gray-900 uppercase">
-          Intro
-        </h5>
-        <p class="">
-          Coming soon...
-        </p>
-      </div>
-      <div>
-        <h5 class="md:text-xs lg:text-sm mb-3 text-sm font-bold leading-none text-gray-900 uppercase">
           Implementation
         </h5>
-        <p class="">
-          Coming soon...
-        </p>
       </div>
     </div>
   </div>
